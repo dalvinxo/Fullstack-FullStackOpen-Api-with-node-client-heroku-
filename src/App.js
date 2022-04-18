@@ -1,30 +1,90 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
-import Country from './components/Country'
+const useField = (type) => {
+  const [value, setValue] = useState('')
 
-import { useField, useCountry } from './hooks'
+  const onChange = (event) => {
+    setValue(event.target.value)
+  }
+
+  return {
+    type,
+    value,
+    onChange
+  }
+}
+
+const useResource = (baseUrl) => {
+
+  const [resources, setResources] = useState([])
+
+  const getAll = () => {
+    return axios
+      .get(baseUrl)
+      .then(response => {
+        setResources(response.data)
+      })
+  }
+
+  const create = (resource) => {
+    return axios.post(baseUrl, resource).then(response => {
+      setResources(resources.concat(response.data))
+    })
+  }
+
+  const service = {
+    getAll,
+    create
+  }
+
+  return [
+    resources, service
+  ]
+}
 
 const App = () => {
+  const content = useField('text')
+  const name = useField('text')
+  const number = useField('text')
 
-  const nameInput = useField('text')
-
-  const [name, setName] = useState('')
+  const [notes, noteService] = useResource('http://localhost:3005/notes')
+  const [persons, personService] = useResource('http://localhost:3005/persons')
   
-  const country = useCountry(name)
+  useEffect(() => {
+    noteService.getAll()
+    personService.getAll()
+  }, [])
 
-  const fetch = (e) => {
-    e.preventDefault()
-    setName(nameInput.value)
+
+  
+
+  const handleNoteSubmit = (event) => {
+    event.preventDefault()
+    noteService.create({ content: content.value })    
+  }
+ 
+  const handlePersonSubmit = (event) => {
+    event.preventDefault()
+    personService.create({ name: name.value, number: number.value})
   }
 
   return (
     <div>
-      <form onSubmit={fetch}>
-        <input {...nameInput} />
-        <button>find</button>
+      <h2>notes</h2>
+      <form onSubmit={handleNoteSubmit}>
+        <input name="notes" {...content} />
+        <button>create</button>
       </form>
+      {notes.map(n => <p key={n.id}>{n.content}</p>)}
 
-      <Country country={country} />
+      <h2>persons</h2>
+      <form onSubmit={handlePersonSubmit}>
+        name <input {...name} /> <br/>
+        number <input {...number} />
+        <button>create</button>
+      </form>
+      {persons.map(n => <p key={n.id}>{n.name} {n.number}</p>)}
     </div>
   )
 }
