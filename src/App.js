@@ -1,47 +1,5 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-
-const useField = (type) => {
-  const [value, setValue] = useState('')
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  return {
-    type,
-    value,
-    onChange
-  }
-}
-
-const useResource = (baseUrl) => {
-
-  const [resources, setResources] = useState([])
-
-  const getAll = () => {
-    return axios
-      .get(baseUrl)
-      .then(response => {
-        setResources(response.data)
-      })
-  }
-
-  const create = (resource) => {
-    return axios.post(baseUrl, resource).then(response => {
-      setResources(resources.concat(response.data))
-    })
-  }
-
-  const service = {
-    getAll,
-    create
-  }
-
-  return [
-    resources, service
-  ]
-}
+import { useEffect } from 'react'
+import { useField, useResource } from './hooks'
 
 const App = () => {
   const content = useField('text')
@@ -52,12 +10,11 @@ const App = () => {
   const [persons, personService] = useResource('http://localhost:3005/persons')
   
   useEffect(() => {
-    noteService.getAll()
-    personService.getAll()
-  }, [])
-
-
-  
+    
+    if(notes.length === 0) noteService.getAll()
+    if(persons.length === 0) personService.getAll()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notes, persons]) 
 
   const handleNoteSubmit = (event) => {
     event.preventDefault()
