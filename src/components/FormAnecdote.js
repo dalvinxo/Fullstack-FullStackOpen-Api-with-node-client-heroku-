@@ -5,31 +5,33 @@ const FormAnecdote = (props) => {
 
     const Navigate = useNavigate()
 
-    const content = useField('text')
-    const author = useField('text')
-    const info = useField('text')
-  
-    // const [content, setContent] = useState('')
-    // const [author, setAuthor] = useState('')
-    // const [info, setInfo] = useState('')
-  
+    const { reset: contentReset, ...content} = useField('text')
+    const { reset: authorReset, ...author} = useField('text')
+    const { reset: infoReset, ...info} = useField('text') 
   
     const handleSubmit = (e) => {
       e.preventDefault()
-      props.addNew({
-        content,
-        author,
-        info,
-        votes: 0
-      })
+
+      const newAnecdote = {
+        content: content.value,
+        author: author.value,
+        info: info.value,
+        vote: 0
+      }
+
+      props.addNew(newAnecdote)
   
       props.setNotification({message: `a new anecdote '${content}' created!`})
   
-    //   setContent('')
-    //   setAuthor('')
-    //   setInfo('')
+      handleResetForm()
   
       Navigate('/')
+    }
+
+    const handleResetForm = () => {
+      contentReset()
+      authorReset()
+      infoReset()
     }
   
     return (
@@ -57,7 +59,8 @@ const FormAnecdote = (props) => {
                 {...info}
             />
           </div>
-          <button>create</button>
+          <button type="submit">create</button>
+          <button type="reset" onClick={handleResetForm}>reset</button>
         </form>
       </div>
     )
