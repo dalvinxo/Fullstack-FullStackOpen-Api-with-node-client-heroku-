@@ -1,0 +1,49 @@
+{
+  "name": "fullstack-part4",
+  "version": "1.0.0",
+  "description": "fullstack4 amazing",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test:debugger": "cross-env NODE_ENV=development node --inspect-brk jest --runInBand",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dalvinxo/Fullstack-part4.git"
+  },
+  "keywords": [],
+  "author": "dalvin molina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dalvinxo/Fullstack-part4/issues"
+  },
+  "homepage": "https://github.com/dalvinxo/Fullstack-part4#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "cypress": "^9.5.4",
+    "eslint": "^8.12.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.2.8",
+    "mongoose-unique-validator": "^3.0.0",
+    "morgan": "^1.10.0"
+  }
+}
