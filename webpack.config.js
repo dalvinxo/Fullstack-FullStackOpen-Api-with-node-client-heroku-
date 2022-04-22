@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-
+const webpack = require('webpack');
 
 module.exports = {
 	mode: 'development',
@@ -17,6 +17,7 @@ module.exports = {
 		open: true
 	},
 	resolve: {
+		extensions: ['.js', '.jsx', '.css', '.json'],
 		alias: {
 			Utilities: path.resolve(__dirname, 'client/util/'),
 			Components: path.resolve(__dirname, 'client/components/'),
@@ -25,10 +26,18 @@ module.exports = {
 		}
 	},
 	devtool: 'inline-source-map',
-	plugins: [new HtmlWebpackPlugin({
-		title: 'React App',
-		template: 'index.html'
-	})],
+	plugins: [
+		new webpack.DefinePlugin({
+			SERVER_MODE: JSON.stringify('development')
+		}),
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.ProvidePlugin({
+			'React': 'react'
+		}),
+		new HtmlWebpackPlugin({
+			title: 'React App',
+			template: 'index.html'
+		})],
 	module: {
 		rules: [
 			{
