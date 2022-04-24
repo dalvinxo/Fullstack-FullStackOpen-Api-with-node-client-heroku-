@@ -1,18 +1,16 @@
 const morgan = require('morgan');
-const { request } = require('../app');
 
 morgan.token('body', (req) => (req.body ? JSON.stringify(req.body) : 'Body is empty'));
 
-const token = (resquest, response, next) => {
+const token = (req, res, next) => {
 
-	const authorization = request.get('Authorization') | false;
+	const authorization = req.headers['authorization'];
 
-	if(authorization && authorization.toLowerCase().startswith('bearer ')){
-		request.token = authorization.subString(7);
-		return resquest;
+	if(authorization && authorization.toLowerCase().startsWith('bearer ')){
+		req.token = authorization.substring(7);
 	}
 
-	return null;
+	return next();
 };
 
 
@@ -48,7 +46,7 @@ const handleUnknownEndpoint = (request, response) => {
 
 module.exports = {
 	morganLogger: morgan(':method :url :status :res[content-length] - :response-time ms :body'),
-	handleToken: token,
+	getToken: token,
 	handleError,
 	handleUnknownEndpoint
 };
