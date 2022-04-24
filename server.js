@@ -15,6 +15,7 @@ const compiler = webpack(webpackConfig);
 
 const webPackOption = {
 	publicPath: webpackConfig.output.publicPath,
+	serverSideRender: true
 };
 
 const devMiddleware = webpackDevMiddleware(compiler, webPackOption);
@@ -25,19 +26,14 @@ app.use(webpackHotMiddleware(compiler));
 app.use('*', (req, res) => {
 
 	const filename = path.join(compiler.outputPath, 'index.html');
-
-	// when the compilation is valid. (studing)
 	compiler.waitUntilValid(() => {
-
 		compiler.outputFileSystem.readFileSync(filename, (err, result) => {
 			if (err) return next(err);
+
 			res.set('content-type', 'text/html');
-			res.send(result);
-			return res.end();
+			res.send(result).end();
 		});
-
 	});
-
 
 });
 

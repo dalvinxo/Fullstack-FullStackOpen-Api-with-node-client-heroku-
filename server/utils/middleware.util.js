@@ -21,7 +21,7 @@ const handleUnknownEndpoint = (request, response) => {
 
 
 module.exports = {
-	logger: morgan(':method :url :status :res[content-length] - :response-time ms :body'),
+	morganLogger: morgan(':method :url :status :res[content-length] - :response-time ms :body'),
 	handleError,
 	handleUnknownEndpoint
 };

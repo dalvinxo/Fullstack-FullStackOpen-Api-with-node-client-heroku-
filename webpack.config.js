@@ -4,9 +4,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
+const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+
+//TODO: create config file dev and prod
 module.exports = {
 	mode: 'development',
-	entry: ['@babel/polyfill', './client/index.js'],
+	entry: ['@babel/polyfill', './client/index.js', hotMiddlewareScript],
 	output: {
 		path: path.resolve(__dirname, 'build'),
 		filename: 'main.js',
@@ -27,9 +30,7 @@ module.exports = {
 		new webpack.DefinePlugin({
 			SERVER_MODE: JSON.stringify('development')
 		}),
-		// new webpack.optimize.OccurrenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
-		// new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.ProvidePlugin({
 			'React': 'react'
 		}),

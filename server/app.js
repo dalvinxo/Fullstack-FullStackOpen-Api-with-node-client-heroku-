@@ -19,7 +19,9 @@ mongoose.connect(configuration.DB_MONGO_URI).then(result => {
 const app = express();
 
 app.use(express.json());
-app.use(middleware.logger);
+if(configuration.ENVIROMENT !== 'production') {
+	app.use(middleware.morganLogger);
+}
 
 app.use('/api/blogs', blogRoute);
 
