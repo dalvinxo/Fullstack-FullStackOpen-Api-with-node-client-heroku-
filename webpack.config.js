@@ -1,4 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const path = require('path');
 const webpack = require('webpack');
 
@@ -10,11 +12,6 @@ module.exports = {
 		filename: 'main.js',
 		clean: true,
 		publicPath: '/'
-	},
-	devServer: {
-		static: path.resolve(__dirname, 'build'),
-		compress: true,
-		open: true
 	},
 	resolve: {
 		extensions: ['.js', '.jsx', '.css', '.json'],
@@ -34,6 +31,7 @@ module.exports = {
 		new webpack.ProvidePlugin({
 			'React': 'react'
 		}),
+		new MiniCssExtractPlugin(),
 		new HtmlWebpackPlugin({
 			title: 'React App',
 			template: 'index.html'
@@ -52,7 +50,7 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			}
 		]
 	}
