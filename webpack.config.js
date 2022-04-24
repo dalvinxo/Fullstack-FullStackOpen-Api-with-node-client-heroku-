@@ -27,7 +27,9 @@ module.exports = {
 		new webpack.DefinePlugin({
 			SERVER_MODE: JSON.stringify('development')
 		}),
+		// new webpack.optimize.OccurrenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
+		// new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.ProvidePlugin({
 			'React': 'react'
 		}),
