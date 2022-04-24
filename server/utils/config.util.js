@@ -6,10 +6,11 @@ if(ENVIROMENT !== 'production') {
 
 PORT = process.env.PORT || 3000;
 DB_MONGO_URI = process.env.DB_MONGO_URI;
-
+SECRET = process.env.SECRET;
 
 module.exports = {
 	ENVIROMENT,
 	DB_MONGO_URI,
+	SECRET,
 	PORT
 };
